@@ -11,4 +11,6 @@ import org.mapstruct.ReportingPolicy;
 public interface IRestaurantRequestMapper {
 
     Restaurant toRestaurant(RestaurantRequestDto restaurantRequestDto);
+
+    RestaurantRequestDto toRequest(Restaurant restaurant);
 }

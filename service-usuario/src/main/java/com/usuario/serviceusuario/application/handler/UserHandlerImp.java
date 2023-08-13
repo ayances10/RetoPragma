@@ -1,6 +1,7 @@
 package com.usuario.serviceusuario.application.handler;
 
 import com.usuario.serviceusuario.application.dto.UserRequestDto;
+import com.usuario.serviceusuario.application.dto.UserResponseDto;
 import com.usuario.serviceusuario.application.mapper.IUserRequestMapper;
 import com.usuario.serviceusuario.application.mapper.IUserResponseMapper;
 import com.usuario.serviceusuario.domain.api.IUserServicePort;
@@ -27,7 +28,19 @@ public class UserHandlerImp implements IUserHandler{
     @Override
     public void saveEmployee(UserRequestDto userRequestDto) {
         User user = userRequestMapper.toUser(userRequestDto);
-        userServicePort.savetEmployee(user);
+        userServicePort.saveEmployee(user);
+    }
+
+    @Override
+    public UserResponseDto getUserById(Long id) {
+        UserResponseDto userResponseDto = userResponseMapper.toResponse(userServicePort.getUserById(id));
+        return userResponseDto;
+    }
+
+    @Override
+    public UserResponseDto getUserByMail(String mail) {
+        UserResponseDto userResponseDto = userResponseMapper.toResponse(userServicePort.getUserByMail(mail));
+        return userResponseDto;
     }
 
 

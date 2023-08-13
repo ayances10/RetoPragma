@@ -6,7 +6,7 @@ import com.usuario.serviceusuario.infrastructure.out.jpa.entity.UserEntity;
 public interface IUserServicePort {
 
     void saveUser(User user);
-    void savetEmployee(User user);
+    void saveEmployee(User user);
 
     User getUserById(Long id);
 

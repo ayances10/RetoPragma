@@ -5,6 +5,7 @@ import com.serviceplazoleta.application.dto.DishResponseDto;
 import com.serviceplazoleta.application.dto.DishUpdateRequestDto;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 public interface IDishHandler {
 
@@ -13,5 +14,8 @@ public interface IDishHandler {
     DishResponseDto getDishById(Long id,DishUpdateRequestDto dishUpdateRequestDto);
     void updateDish(Long id, DishUpdateRequestDto dishUpdateRequestDto, Long restaurantId, HttpServletRequest request, Long propietarioId);
 
+    List<DishResponseDto> getAllDishes();
+    List<DishResponseDto> findAllByRestaurantId(Long idRestaurant,Integer page,Integer size);
+    void enableDisableDish(Long id, Long flag);
     void validateAccess(Long userId, String requiredRole,String token) throws Exception;
 }

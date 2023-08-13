@@ -7,16 +7,19 @@ import com.serviceplazoleta.application.mapper.IDishRequestMapper;
 import com.serviceplazoleta.application.mapper.IDishResponseMapper;
 import com.serviceplazoleta.domain.api.IDishServicePort;
 import com.serviceplazoleta.domain.model.Dish;
+import com.serviceplazoleta.infrastructure.exception.NoDataFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class DishHandler implements IDishHandler{
+
     private final IDishServicePort dishServicePort;
     private final IDishRequestMapper dishRequestMapper;
     private final IDishResponseMapper dishResponseMapper;
@@ -36,6 +39,29 @@ public class DishHandler implements IDishHandler{
     public void updateDish(Long id, DishUpdateRequestDto dishUpdateRequestDto, Long restaurantId, HttpServletRequest request, Long propietarioId) {
         Dish dish = dishRequestMapper.toDishUpdate(dishUpdateRequestDto);
         dishServicePort.updateDish(id,dish,restaurantId,request,propietarioId);
+    }
+
+    @Override
+    public List<DishResponseDto> getAllDishes() {
+        List<Dish> dishList = dishServicePort.getAllDish();
+        if (dishList.isEmpty()){
+            throw new NoDataFoundException();
+        }
+        return dishResponseMapper.toResponseList(dishList);
+    }
+
+    @Override
+    public List<DishResponseDto> findAllByRestaurantId(Long idRestaurant, Integer page, Integer size) {
+        List<Dish> dishList = dishServicePort.findAllByRestaurantId(idRestaurant,page,size);
+        if (dishList.isEmpty()){
+            throw new NoDataFoundException();
+        }
+        return dishResponseMapper.toResponseList(dishList);
+    }
+
+    @Override
+    public void enableDisableDish(Long id, Long flag) {
+        dishServicePort.enableDisableDish(id,flag);
     }
 
 

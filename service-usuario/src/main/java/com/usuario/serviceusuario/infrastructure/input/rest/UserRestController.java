@@ -30,4 +30,17 @@ public class UserRestController {
         Boolean userHasRole = userHandler.validateUserHasRole(userId, requiredRole);
         return new ResponseEntity<>(userHasRole, HttpStatus.OK);
     }
+
+    @PostMapping("/employee")
+    public ResponseEntity<Void> saveEmployee(@RequestBody UserRequestDto empleado){
+        userHandler.saveUser(empleado);
+        userHandler.saveEmployee(empleado);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping("/client")
+    public ResponseEntity<Void> saveClient(@Valid @RequestBody UserRequestDto client){
+        userHandler.saveUser(client);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 }

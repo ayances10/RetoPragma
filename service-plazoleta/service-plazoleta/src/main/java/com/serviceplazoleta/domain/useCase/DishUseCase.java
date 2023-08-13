@@ -15,6 +15,8 @@ import com.serviceplazoleta.infrastructure.out.jpa.entity.RestaurantEntity;
 import lombok.RequiredArgsConstructor;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class DishUseCase implements IDishServicePort {
@@ -57,11 +59,42 @@ public class DishUseCase implements IDishServicePort {
         dishPersistencePort.saveDish(dish1);
     }
 
+    @Override
+    public void enableDisableDish(Long id, Long flag) {
+        Dish dish = dishPersistencePort.getDishById(id);
+        if (dish==null) throw new DishNotExistException();
+
+        boolean isEnableOrDisable=(flag == 1)?true:false;
+
+        dish.setActive(isEnableOrDisable);
+        dishPersistencePort.saveDish(dish);
+
+    }
+
+    @Override
+    public List<Dish> getAllDish() {
+        return dishPersistencePort.getAllDish();
+    }
+
+    @Override
+    public List<Dish> findAllByRestaurantId(Long idRestaurant, Integer page, Integer size) {
+        List<Dish> dishList = dishPersistencePort.findAllByRestaurantId(idRestaurant,page,size);
+        List<Dish> dishesActive = new ArrayList<>();
+        for (Dish dish:dishList){
+            if (dish.getActive()){
+                dishesActive.add(dish);
+            }
+        }
+        return dishesActive;
+    }
+
 
     @Override
     public Boolean validateAccess(Long userId, String requiredRole, String token) {
         return userFeignClientPort.validateUserId(userId,requiredRole,token);
     }
+
+
 
 
 }

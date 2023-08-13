@@ -1,7 +1,7 @@
 package com.serviceplazoleta.application.mapper;
 
-import com.serviceplazoleta.application.dto.DishResponseDto;
-import com.serviceplazoleta.domain.model.Dish;
+import com.serviceplazoleta.application.dto.RestaurantPaginationResponseDto;
+import com.serviceplazoleta.domain.model.Restaurant;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
@@ -10,10 +10,7 @@ import java.util.List;
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
-public interface IDishResponseMapper {
+public interface IRestaurantPaginationResponseMapper {
 
-    DishResponseDto toResponse(Dish dish);
-
-    List<DishResponseDto> toResponseList(List<Dish> dishList);
-
+    List<RestaurantPaginationResponseDto> toResponseListPagination(List<Restaurant> restaurantList);
 }

@@ -12,9 +12,6 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="com.service-plazoleta.service-plazoleta" target="17" />
-      <module name="com.service-plazoleta.service-plazoleta.main" target="17" />
-      <module name="com.service-plazoleta.service-plazoleta.test" target="17" />
       <module name="service-plazoleta.service-plazoleta.main~1" target="17" />
       <module name="service-plazoleta.service-plazoleta.test~1" target="17" />
     </bytecodeTargetLevel>
