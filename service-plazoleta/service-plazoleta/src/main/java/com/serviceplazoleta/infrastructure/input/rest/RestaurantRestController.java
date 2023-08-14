@@ -21,6 +21,14 @@ public class RestaurantRestController {
     public RestaurantRestController(IRestaurantHandler restaurantHandler) {
         this.restaurantHandler = restaurantHandler;
     }
+    /*
+    @PostMapping("/{id}/linkEmployee")
+    public ResponseEntity<Void> linkEmployee(
+            @PathVariable(value = "id") Long restaurantId,
+            @RequestParam("employeeId") Long employeeId) {
+
+        restaurantHandler.linkEmployee(Long restaurantId, Long employeeId)
+    }*/
 
     @PostMapping("/save")
     public ResponseEntity<Void> saveRestaurant(@Valid @RequestBody RestaurantRequestDto restaurantRequestDto, HttpServletRequest request) throws Exception {

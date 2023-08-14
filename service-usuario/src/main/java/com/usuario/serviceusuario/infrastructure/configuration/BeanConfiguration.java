@@ -1,20 +1,16 @@
 package com.usuario.serviceusuario.infrastructure.configuration;
 
 
-import com.usuario.serviceusuario.application.mapper.IEmployeeRequestMapper;
 import com.usuario.serviceusuario.application.mapper.IRestaurantResponseMapper;
 import com.usuario.serviceusuario.domain.api.IRoleServicePort;
 import com.usuario.serviceusuario.domain.api.IUserServicePort;
 import com.usuario.serviceusuario.domain.spi.IRolePersistencePort;
 import com.usuario.serviceusuario.domain.spi.IUserPersistencePort;
-import com.usuario.serviceusuario.domain.spi.feignclients.IEmployeeFeignClientPort;
 import com.usuario.serviceusuario.domain.spi.feignclients.IRestaurantFeingClientPort;
 import com.usuario.serviceusuario.domain.spi.token.IToken;
 import com.usuario.serviceusuario.domain.useCase.RoleUseCase;
 import com.usuario.serviceusuario.domain.useCase.UserUseCase;
-import com.usuario.serviceusuario.infrastructure.out.feignclients.IEmployeeFeignClient;
 import com.usuario.serviceusuario.infrastructure.out.feignclients.IRestaurantFeignClient;
-import com.usuario.serviceusuario.infrastructure.out.feignclients.adapter.EmployeeFeignAdapter;
 import com.usuario.serviceusuario.infrastructure.out.feignclients.adapter.RestaurantFeignAdapter;
 import com.usuario.serviceusuario.infrastructure.out.jpa.adapter.RoleJpaAdapter;
 import com.usuario.serviceusuario.infrastructure.out.jpa.adapter.UserJpaAdapter;
@@ -37,20 +33,16 @@ public class BeanConfiguration {
     private final PasswordEncoder passwordEncoder;
 
     private final IRestaurantFeignClient restaurantFeignClient;
-    private final IEmployeeFeignClient employeeFeignClient;
-    private final IEmployeeRequestMapper employeeRequestMapper;
 
     private final IRestaurantResponseMapper restaurantResponseMapper;
 
-    public BeanConfiguration(IUserRepository userRepository, IUserEntityMapper userEntityMapper, IRoleRepository roleRepository, IRoleEntityMapper roleEntityMapper, PasswordEncoder passwordEncoder, IRestaurantFeignClient restaurantFeignClient, IEmployeeFeignClient employeeFeignClient, IEmployeeRequestMapper employeeRequestMapper, IRestaurantResponseMapper restaurantResponseMapper) {
+    public BeanConfiguration(IUserRepository userRepository, IUserEntityMapper userEntityMapper, IRoleRepository roleRepository, IRoleEntityMapper roleEntityMapper, PasswordEncoder passwordEncoder, IRestaurantFeignClient restaurantFeignClient,IRestaurantResponseMapper restaurantResponseMapper) {
         this.userRepository = userRepository;
         this.userEntityMapper = userEntityMapper;
         this.roleRepository = roleRepository;
         this.roleEntityMapper = roleEntityMapper;
         this.passwordEncoder = passwordEncoder;
         this.restaurantFeignClient = restaurantFeignClient;
-        this.employeeFeignClient = employeeFeignClient;
-        this.employeeRequestMapper = employeeRequestMapper;
         this.restaurantResponseMapper = restaurantResponseMapper;
     }
 
@@ -62,7 +54,7 @@ public class BeanConfiguration {
     }
     @Bean
     public IUserServicePort userServicePort(){
-        return new UserUseCase(userPersistencePort(), restaurantFeignClient, employeeFeignClientPort(), passwordEncoder, token());
+        return new UserUseCase(userPersistencePort(), restaurantFeignClient, passwordEncoder, token());
     }
 
     @Bean
@@ -85,8 +77,5 @@ public class BeanConfiguration {
         return new RestaurantFeignAdapter(restaurantFeignClient,restaurantResponseMapper);
     }
 
-    @Bean
-    public IEmployeeFeignClientPort employeeFeignClientPort(){
-        return new EmployeeFeignAdapter(employeeFeignClient, employeeRequestMapper);
-    }
+
 }

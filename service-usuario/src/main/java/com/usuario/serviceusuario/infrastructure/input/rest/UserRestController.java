@@ -25,16 +25,17 @@ public class UserRestController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+
     @PostMapping("/{id}/validateRole")
     public ResponseEntity<Boolean> validateRole(@Valid @PathVariable("id") Long userId, @RequestParam("requiredRole") String requiredRole) throws Exception {
         Boolean userHasRole = userHandler.validateUserHasRole(userId, requiredRole);
         return new ResponseEntity<>(userHasRole, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('PROPIETARIO')")
     @PostMapping("/employee")
-    public ResponseEntity<Void> saveEmployee(@RequestBody UserRequestDto empleado){
+    public ResponseEntity<Void> saveEmployee(@Valid @RequestBody UserRequestDto empleado){
         userHandler.saveUser(empleado);
-        userHandler.saveEmployee(empleado);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

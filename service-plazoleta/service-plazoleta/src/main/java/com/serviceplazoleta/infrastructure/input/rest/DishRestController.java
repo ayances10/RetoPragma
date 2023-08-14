@@ -40,7 +40,8 @@ public class DishRestController {
     }
 
     @PostMapping("/{id}/activate/{enableDisable}")
-    public ResponseEntity<DishRequestDto> enableDisable(@PathVariable(value = "id")Long id,@PathVariable(value = "enableDisable")Long enableDisble){
+    public ResponseEntity<DishRequestDto> enableDisable(@PathVariable(value = "id")Long id,@PathVariable(value = "enableDisable")Long enableDisble,HttpServletRequest request, Long propietarioId) throws Exception{
+        propietarioId = getUserIdAndValidateAccess(request,"PROPIETARIO");
         dishHandler.enableDisableDish(id,enableDisble);
         return new ResponseEntity<>(HttpStatus.OK);
     }

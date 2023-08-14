@@ -2,11 +2,9 @@ package com.usuario.serviceusuario.domain.useCase;
 
 import com.usuario.serviceusuario.application.dto.RestaurantResponseDto;
 import com.usuario.serviceusuario.domain.api.IUserServicePort;
-import com.usuario.serviceusuario.domain.model.Employee;
 import com.usuario.serviceusuario.domain.model.Role;
 import com.usuario.serviceusuario.domain.model.User;
 import com.usuario.serviceusuario.domain.spi.IUserPersistencePort;
-import com.usuario.serviceusuario.domain.spi.feignclients.IEmployeeFeignClientPort;
 import com.usuario.serviceusuario.domain.spi.token.IToken;
 import com.usuario.serviceusuario.infrastructure.out.feignclients.IRestaurantFeignClient;
 import com.usuario.serviceusuario.infrastructure.out.jpa.entity.UserEntity;
@@ -18,16 +16,15 @@ public class UserUseCase implements IUserServicePort {
 
     private final IRestaurantFeignClient restaurantFeignClient;
 
-    private final IEmployeeFeignClientPort employeeFeignClientPort;
+
     private final PasswordEncoder passwordEncoder;
     private final IToken token;
 
 
 
-    public UserUseCase(IUserPersistencePort userPersistencePort, IRestaurantFeignClient restaurantFeignClient, IEmployeeFeignClientPort employeeFeignClientPort, PasswordEncoder passwordEncoder, IToken token) {
+    public UserUseCase(IUserPersistencePort userPersistencePort, IRestaurantFeignClient restaurantFeignClient, PasswordEncoder passwordEncoder, IToken token) {
         this.userPersistencePort = userPersistencePort;
         this.restaurantFeignClient = restaurantFeignClient;
-        this.employeeFeignClientPort = employeeFeignClientPort;
         this.passwordEncoder = passwordEncoder;
         this.token = token;
     }
@@ -40,22 +37,7 @@ public class UserUseCase implements IUserServicePort {
         userPersistencePort.saveUser(user);
     }
 
-    @Override
-    public void saveEmployee(User user) {
-        Employee employee = new Employee();
-        String beareToken = token.getBearerToken();
-        Long idOwnerAut = token.getUserAuthenticatedId(beareToken);
 
-        RestaurantResponseDto restaurant = restaurantFeignClient.getRestaurantByIdProprietor(idOwnerAut);
-        String restaurantId = String.valueOf(restaurant.getId());
-        System.out.println(restaurantId);
-        String employeeId = String.valueOf(userPersistencePort.getUserByMail(user.getMail()).getId());
-        System.out.println(employeeId);
-
-        employee.setRestaurantId(restaurantId);
-        employee.setEmployeeId(employeeId);
-        employeeFeignClientPort.saveEmploye(employee);
-    }
 
     @Override
     public User getUserById(Long id) {

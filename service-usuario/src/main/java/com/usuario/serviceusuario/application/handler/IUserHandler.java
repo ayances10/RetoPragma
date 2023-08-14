@@ -7,9 +7,7 @@ public interface IUserHandler {
 
     void saveUser(UserRequestDto userRequestDto);
 
-    void saveEmployee(UserRequestDto userRequestDto);
-
-    UserResponseDto getUserById(Long id);
+     UserResponseDto getUserById(Long id);
 
     UserResponseDto getUserByMail(String mail);
     Boolean validateUserHasRole(Long userId, String requiredRole) throws Exception;

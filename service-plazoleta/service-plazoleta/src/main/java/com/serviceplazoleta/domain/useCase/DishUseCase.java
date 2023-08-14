@@ -78,14 +78,7 @@ public class DishUseCase implements IDishServicePort {
 
     @Override
     public List<Dish> findAllByRestaurantId(Long idRestaurant, Integer page, Integer size) {
-        List<Dish> dishList = dishPersistencePort.findAllByRestaurantId(idRestaurant,page,size);
-        List<Dish> dishesActive = new ArrayList<>();
-        for (Dish dish:dishList){
-            if (dish.getActive()){
-                dishesActive.add(dish);
-            }
-        }
-        return dishesActive;
+        return dishPersistencePort.findAllByRestaurantId(idRestaurant,page,size);
     }
 
 

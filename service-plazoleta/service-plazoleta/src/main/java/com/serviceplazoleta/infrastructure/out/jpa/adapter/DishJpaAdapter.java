@@ -49,7 +49,7 @@ public class DishJpaAdapter implements IDishPersistencePort {
 
     @Override
     public List<Dish> getAllDish() {
-        List<DishEntity> dishEntitiesList = dishRepository.findAll(Sort.by(Sort.Direction.ASC,"nombre"));
+        List<DishEntity> dishEntitiesList = dishRepository.findAll(Sort.by(Sort.Direction.ASC,"name"));
         if (dishEntitiesList.isEmpty()){
             throw new NoDataFoundException();
         }
@@ -58,10 +58,11 @@ public class DishJpaAdapter implements IDishPersistencePort {
 
     @Override
     public List<Dish> findAllByRestaurantId(Long idRestaurant, Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page,size,Sort.by("categoryId"));
+        Pageable pageable = PageRequest.of(page,size);
         return dishRepository.findAllByRestaurantId(idRestaurant,pageable)
                 .stream()
-                .map(dishEntityMapper::toDish)
+                .map(dishEntity -> dishEntityMapper.toDish(dishEntity))
+                .filter(dishEntity -> dishEntity.getActive())
                 .collect(Collectors.toList());
     }
 }
